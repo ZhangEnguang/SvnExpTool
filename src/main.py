@@ -142,6 +142,7 @@ def exp_update():
         if text.find(".") < 0:
             continue
         is_webroot = "sourcecode" in str(text) and "WebRoot" in str(text)
+        is_webapp = "webapp" in str(text)
         # 如果是资源文件,从源代码获取
         if is_webroot:
             start_index = str(text).index("sourcecode")
@@ -156,9 +157,37 @@ def exp_update():
             if not os.path.exists(source_path_full):
                 continue
             shutil.copy(source_path_full, target_path_full)
+        elif is_webapp:
+            start_index = str(text).index("rdsysedu")
+            src_code_base = text[start_index:len(text)]  # 'sourcecode/WebRoot/****'
+            source_path_full = os.path.join(source_path.get(), str(src_code_base)[len("rdsysedu")+1:len(str(src_code_base))])
+            file_name = os.path.basename(source_path_full)
+            # 生成ROOT下资源文件路径 eg:business/js/projectApply/
+            target_code_base = get_middle_str(text, "webapp", file_name)
+            target_path_full = update_path_root + target_code_base
+            if not os.path.exists(target_path_full):
+                os.makedirs(target_path_full)
+            if not os.path.exists(source_path_full):
+                continue
+            shutil.copy(source_path_full, target_path_full)
         # 如果是java文件，需要找到对应的class文件，如果有内容类 以 xxx$xxx.class体现
         # 无法确认svn路径是否为编译文件，采用向上递归法获取最近的
         elif text.find("/resource/") > -1:
+            classes_path_prefix = os.path.join('WEB-INF', 'classes')
+            update_path_root_classes = os.path.join(update_path_root, classes_path_prefix)
+            classes_path_root_source = classes_path_root
+            # 获取编译路径
+            classes_path_real = recursion_path(classes_path_root_source, text)
+            file_name = os.path.basename(classes_path_real)
+            source_path_part = classes_path_real.replace(file_name, "")
+            source = os.path.join(classes_path_root_source, classes_path_real)
+            target = os.path.join(update_path_root_classes, source_path_part)
+            if not os.path.exists(target):
+                os.makedirs(target)
+            if not os.path.exists(source):
+                continue
+            shutil.copy(source, target)
+        elif text.find("/resources/") > -1:
             classes_path_prefix = os.path.join('WEB-INF', 'classes')
             update_path_root_classes = os.path.join(update_path_root, classes_path_prefix)
             classes_path_root_source = classes_path_root
