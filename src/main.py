@@ -280,8 +280,12 @@ def treeview_double_click(event):
     for i, log in enumerate(change_log_list):
         action = log["@action"]
         text = log["#text"]
-        text = text[text.index("RDSYSEDU"):len(text)]
-        tree_log.insert("", i, values=(action, text))
+        if text.find("rdsysedu") != -1:
+            text = text[text.index("rdsysedu"):len(text)]
+            tree_log.insert("", i, values=(action, text))
+        elif text.find("RDSYSEDU") != -1:
+            text = text[text.index("RDSYSEDU"):len(text)]
+            tree_log.insert("", i, values=(action, text))
     tree_log.pack()
     win_top.deiconify()
 
