@@ -321,7 +321,7 @@ if __name__ == '__main__':
     if 'checkout' not in str(svn_help) and 'merge' not in str(svn_help):
         messagebox.showinfo("错误", "未安装svn命令环境，无法进行导出操作！")
     else:
-        github_link_str = 'https://github.com/sunafei/SvnExpTools.git'
+        github_link_str = ''#连接地址
         win = t.Tk()
         win.title('svn导出更新包工具')
         # win.iconbitmap('icon.ico')
