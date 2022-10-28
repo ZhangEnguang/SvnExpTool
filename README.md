@@ -31,7 +31,13 @@ python src\main.py
 
 ## 打包(windows)
 ```shell script
-Pyinstaller -w -F main.spec
+Pyinstaller main.spec
+```
+main.spec 中的pathex需要根据需要进行创建目录
+
+如果打包失败需要执行命令
+```shell script
+pip install https://github.com/pyinstaller/pyinstaller/archive/develop.tar.gz
 ```
 
 ## 注意

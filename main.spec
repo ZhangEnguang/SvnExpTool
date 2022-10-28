@@ -5,12 +5,11 @@ block_cipher = None
 
 
 a = Analysis(['src\\main.py'],
-             pathex=['C:\\work\\program\\py-space\\SvnExpTools'],
+             pathex=['D:\\work\\SvnExpTools'],
              binaries=[],
              datas=[],
              hiddenimports=['pkg_resources'],
              hookspath=[],
-             hooksconfig={},
              runtime_hooks=[],
              excludes=[],
              win_no_prefer_redirects=False,
